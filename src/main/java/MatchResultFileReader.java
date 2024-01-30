@@ -14,7 +14,7 @@ public class MatchResultFileReader {
         this.scanner = new Scanner(file);
     }
 
-    public List<MatchResult> readFile() {
+    /*public List<MatchResult> readFile() {
         List<MatchResult> matchResults = new ArrayList<>();
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
@@ -23,18 +23,37 @@ public class MatchResultFileReader {
         }
         scanner.close(); // Luk scanneren efter brug
         return matchResults;
+    }*/
+    public List<MatchResult> readFile() {
+        List<MatchResult> matchResults = new ArrayList<>();
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            MatchResult matchResult = parseLineToMatchResult(line);
+            if (matchResult != null) {
+                matchResults.add(matchResult);
+            }
+        }
+        return matchResults;
     }
 
     private MatchResult parseLineToMatchResult(String line) {
-        String[] data = line.split(";");
-        String team1 = data[0];
-        String team2 = data[1];
-        int goalsTeam1 = Integer.parseInt(data[2]);
-        int goalsTeam2 = Integer.parseInt(data[3]);
+        String[] parts = line.split(";");
+
+        // Opdeling af holdnavne, antager at de er adskilt af et bindestreg
+        String[] teams = parts[0].split("-");
+        String team1 = teams[0];
+        String team2 = teams[1];
+
         List<String> goalScorers = new ArrayList<>();
-        if (data.length > 4 && !data[4].isEmpty()) {
-            goalScorers.addAll(Arrays.asList(data[4].split(",")));
+        if (parts.length > 1 && !parts[1].isEmpty()) {
+            goalScorers.addAll(Arrays.asList(parts[1].split(",")));
         }
+
+        // Antal mål for hvert hold (kan ikke udledes fra de nuværende data)
+        int goalsTeam1 = 0;
+        int goalsTeam2 = 0;
+
         return new MatchResult(team1, team2, goalsTeam1, goalsTeam2, goalScorers);
     }
+
 }
