@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 public class Main {
     public static void main(String[] args) {
         try {
-            String filename = "path/to/your/Euro2024QualifyingRound.csv";
+            String filename = "Euro2024QualifyingRound.csv";
 
             // Opretter en instans af Statistics
             Statistics stats = new Statistics(filename);
